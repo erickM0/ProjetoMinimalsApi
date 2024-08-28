@@ -23,3 +23,4 @@ c:\Users\erick\Documents\Projects\Minimal-Api\obj\Debug\net8.0\refint\Minimal-Ap
 c:\Users\erick\Documents\Projects\Minimal-Api\obj\Debug\net8.0\Minimal-Api.pdb
 c:\Users\erick\Documents\Projects\Minimal-Api\obj\Debug\net8.0\Minimal-Api.genruntimeconfig.cache
 c:\Users\erick\Documents\Projects\Minimal-Api\obj\Debug\net8.0\ref\Minimal-Api.dll
+C:\Users\erick\Documents\Projects\Minimal-Api\obj\Debug\net8.0\Minimal-Api.sourcelink.json
