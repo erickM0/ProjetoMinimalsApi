@@ -8,9 +8,7 @@ namespace Minimal_Api.Domain.DTOs
      public record VehicleDTO
     {
         
-        public int Id { get; set; } = default;
-
-        
+              
          public required string Name { get; set; }
 
         

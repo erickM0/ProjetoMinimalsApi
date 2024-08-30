@@ -22,5 +22,6 @@ namespace Minimal_Api.Domain.Services
             return list;
             
         }
+
     }
 }

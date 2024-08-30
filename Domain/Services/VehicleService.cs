@@ -16,7 +16,7 @@ namespace Minimal_Api.Domain.Services
         public VehicleService(DbContexto dbContext){
             _dbContext = dbContext;
         }
-        public List<Vehicle> All(int page =1, string? name = null, string? brand = null){
+        public List<Vehicle> All(int page = 1, string? name = null, string? brand = null){
            
             var query =  _dbContext.Vehicles.AsQueryable();
 
@@ -25,12 +25,12 @@ namespace Minimal_Api.Domain.Services
             }
 
             if(!String.IsNullOrEmpty(brand)){
-                query = query.Where(v => v.Name.Contains(brand));
+                query = query.Where(v => v.Brand.Contains(brand));
             }
 
             int itemsPerPage = 10;
-
-            query = query.Skip((page - 1)*itemsPerPage).Take(itemsPerPage);
+            
+           query = query.Skip((page - 1)*itemsPerPage).Take(itemsPerPage);
 
             return query.ToList();
             
