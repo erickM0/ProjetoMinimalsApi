@@ -1,13 +1,13 @@
 using Minimal_Api.Domain.Entities;
-using Microsoft.OpenApi.Models;
 using Minimal_Api.Domain.DTOs;
 using Minimal_Api.Infra.DB;
 using Microsoft.EntityFrameworkCore;
 using Minimal_Api.Domain.Interfaces;
 using Minimal_Api.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Swagger;
 using Minimal_Api.Domain.ModelsView;
+using Minimal_Api.Domain.Enum;
+using System.Text.Json.Serialization;
 
 #region  builder
 
@@ -21,6 +21,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAdmService,AdmService>();
 builder.Services.AddScoped<IVehicleService,VehicleService>();
 
+// Fixing Enum Serialization
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+{
+    options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 builder.Services.AddDbContext<DbContexto>(options =>{
     options.UseMySql(
@@ -39,9 +45,47 @@ app.MapGet("/", () => Results.Json(new Home())).WithTags("Home");
 #endregion
 
 #region Adm
-app.MapPost("/admin/login",([FromBody]LoginDTO loginDTO,IAdmService admService) =>{
+ValidationsError AdmDTOValidation(AdmDTO admDTO){
+     var validationsError = new ValidationsError();
     
+
+    if(string.IsNullOrEmpty(admDTO.Email)) validationsError.Message.Add("The 'Email' field must not be empty!");
+    if(string.IsNullOrEmpty(admDTO.Password)) validationsError.Message.Add("The 'Password' field must not be empty!");
+    if(!Enum.IsDefined(typeof(EnumProfiles),admDTO.Profile)) validationsError.Message.Add("The 'Profile' must be one of the options:Admin, Edit, Seller!");
+    return validationsError;
+}
+
+app.MapPost("/admin/login",([FromBody] LoginDTO loginDTO,IAdmService admService) =>{
+    if (admService.Login(loginDTO) != null)
+    {
+        return Results.Ok("Login com sucesso!");
+    }
+    else{
+        return Results.Unauthorized();
+    }
 }).WithTags("Admin");
+
+app.MapPost("/admin",([FromBody] AdmDTO admDTO, IAdmService admService) =>{
+
+    
+    
+    ValidationsError validations = AdmDTOValidation(admDTO);
+
+    
+    if(validations.Message.Count()>0) return Results.BadRequest(validations);
+
+    var adm = new Adm{
+        Email = admDTO.Email,
+        Password = admDTO.Password,
+        Profile = admDTO.Profile.ToString()
+    };
+
+    admService.Create(adm);
+
+    return Results.Created($"/admin/{adm.Id}", adm);
+
+}).WithTags("Admin");
+
 
 #endregion
 
@@ -99,7 +143,6 @@ app.MapDelete("/vehicles/{id}", ([FromRoute] int id, IVehicleService vehicleServ
     return Results.NoContent();
 
 }).WithTags("Vehicles");
-
 
 app.MapGet("/vehicles", ([FromQuery] int? page, string? name, string? brand ,IVehicleService vehicleService)=>{
 

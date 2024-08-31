@@ -10,5 +10,9 @@ namespace Minimal_Api.Domain.Interfaces
      public interface IAdmService
     {
         Adm? Login(LoginDTO loginDTO);
+
+        void Create(Adm adm);
+
+        List<Adm> All(int? Page);
     }
 }
