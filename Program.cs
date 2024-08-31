@@ -86,6 +86,22 @@ app.MapPost("/admin",([FromBody] AdmDTO admDTO, IAdmService admService) =>{
 
 }).WithTags("Admin");
 
+app.MapGet("/admin",([FromQuery] int? page, IAdmService admService  ) =>{
+     var list = new List<AdmModelView>();
+    var admList = admService.All(page);
+    
+    foreach(var adm in admList){
+        list.Add(new AdmModelView{
+            Id = adm.Id,
+            Email = adm.Email,
+            Profile = adm.Profile.ToString()
+
+        });
+    }
+
+
+    return Results.Ok(list);
+}).WithTags("Admin");
 
 #endregion
 
