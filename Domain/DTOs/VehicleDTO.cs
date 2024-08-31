@@ -8,7 +8,6 @@ namespace Minimal_Api.Domain.DTOs
      public record VehicleDTO
     {
         
-              
          public required string Name { get; set; }
 
         
