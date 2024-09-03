@@ -103,6 +103,23 @@ app.MapGet("/admin",([FromQuery] int? page, IAdmService admService  ) =>{
     return Results.Ok(list);
 }).WithTags("Admin");
 
+app.MapGet("/admin/{id}",([FromRoute] int id, IAdmService admService  ) =>{
+    
+    var adm = admService.SearchById(id);
+
+    if(adm ==null) return Results.NotFound();
+    
+    var admView = new AdmModelView{
+        Id = adm.Id,
+        Email = adm.Email,
+        Profile = adm.Profile
+    };
+
+
+    return Results.Ok(admView);
+}).WithTags("Admin");
+
+
 #endregion
 
 #region Vehicles

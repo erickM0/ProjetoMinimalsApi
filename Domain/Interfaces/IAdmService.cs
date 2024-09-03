@@ -14,5 +14,7 @@ namespace Minimal_Api.Domain.Interfaces
         void Create(Adm adm);
 
         List<Adm> All(int? Page);
+
+        Adm? SearchById(int id);
     }
 }

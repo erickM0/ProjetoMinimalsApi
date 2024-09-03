@@ -41,5 +41,11 @@ namespace Minimal_Api.Domain.Services
             return query.ToList();  
         }
 
+        public Adm? SearchById(int id){
+            
+            return _dbContext.Administradores.Where(adm => adm.Id == id).FirstOrDefault();
+
+        }
+
     }
 }
