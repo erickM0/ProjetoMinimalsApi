@@ -50,7 +50,7 @@ namespace Minimal_Api.Domain.Services
             
         }
 
-        public Vehicle? ShearchById(int id)
+        public Vehicle? SearchById(int id)
         {
             var query =  _dbContext.Vehicles.AsQueryable();
             return query.Where(v=> v.Id == id).FirstOrDefault();

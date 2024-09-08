@@ -41,7 +41,7 @@ namespace Test.Infra
 
             var restoreProcessInfo = new ProcessStartInfo {
                 FileName = "docker",
-                Arguments = $"exec -i {containerName} bash -c \"mysql -uroot -p'Senha123' CarrosDB < /tmp/TestDb.sql\"",
+                Arguments = $"exec -i {containerName} bash -c \"mysql -uroot -p'Senha123'  TestDb < /tmp/TestDb.sql\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,

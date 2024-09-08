@@ -246,7 +246,7 @@ app.MapPost("/vehicles", ([FromBody] VehicleDTO vehicleDTO,IVehicleService vehic
 app.MapPut("/vehicles/{id}", ([FromRoute] int id, VehicleDTO vehicleDTO,IVehicleService vehicleService)=>{
     
         
-    var vehicle = vehicleService.ShearchById(id);
+    var vehicle = vehicleService.SearchById(id);
     if(vehicle == null) return Results.NotFound();
 
     ValidationsError validationsError = VehicleDTOValidation(vehicleDTO);
@@ -265,7 +265,7 @@ app.MapPut("/vehicles/{id}", ([FromRoute] int id, VehicleDTO vehicleDTO,IVehicle
 
 app.MapDelete("/vehicles/{id}", ([FromRoute] int id, IVehicleService vehicleService)=>{
     
-    var vehicle = vehicleService.ShearchById(id);
+    var vehicle = vehicleService.SearchById(id);
     if(vehicle == null) return Results.NotFound();
     
     vehicleService.Delete(vehicle);
@@ -288,7 +288,7 @@ app.MapGet("/vehicles", ([FromQuery] int? page, string? name, string? brand ,IVe
 
 app.MapGet("/vehicles/{id}", ([FromRoute]int id, IVehicleService vehicleService)=>{
 
-    var vehicle = vehicleService.ShearchById(id);
+    var vehicle = vehicleService.SearchById(id);
     if(vehicle != null){
         return Results.Ok(vehicle);
     }
