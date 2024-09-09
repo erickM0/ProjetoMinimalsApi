@@ -19,7 +19,7 @@ namespace Minimal_Api.Domain.Entities
 
         [Required]
         [StringLength(255)]
-         public required string? Email { get; set; }
+         public required string Email { get; set; }
 
         [Required]
         [StringLength(50)]
