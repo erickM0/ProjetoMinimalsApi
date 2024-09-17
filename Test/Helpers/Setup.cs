@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Minimal_Api;
+using Minimal_Api.Domain.Interfaces;
+using Test.Mocks;
 
 namespace Test.Helpers
 {
@@ -24,12 +27,19 @@ namespace Test.Helpers
             Setup.http = Setup.http.WithWebHostBuilder(builder =>
             {
                 builder.UseSetting("https_port", Setup.PORT).UseEnvironment("Testing");
-                
+
                 builder.ConfigureServices(services =>
                 {
-
+                    services.AddScoped<IAdmService, AdmServicesMock>();
                 });
             });
+
+            Setup.client = Setup.http.CreateClient();
+        }
+
+        public static void ClassCleanup()
+        {
+            Setup.http.Dispose();
         }
     }
 }
